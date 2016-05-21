@@ -1,12 +1,29 @@
 var input = document.getElementById('csv');
+var btn = document.getElementById('btn');
 var template = Hogan.compile(document.getElementById('template').innerText);
 var resultContainer = document.getElementById('results');
+var dragClass = 'loading';
 
-input.addEventListener('change', onFileSelected);
+input.addEventListener('change', onFileSelected, false);
+document.addEventListener('dragenter', onDragEnter, false);
+document.addEventListener('dragover', function (e) { e.preventDefault(); }, false);
+document.addEventListener('drop', onDrop, false);
 
 function onFileSelected(e) {
-    var files = Array.prototype.slice.call(e.target.files, 0, 1);
+    parseFiles(arrayify(files));
+}
 
+function onDragEnter(e) {
+    btn.classList.add(dragClass);
+}
+
+function onDrop(e) {
+    e.preventDefault();
+    btn.classList.remove(dragClass);
+    parseFiles(arrayify(e.dataTransfer.files));
+}
+
+function parseFiles(files) {
     files.forEach(function (file) {
         parse(file);
     });
@@ -69,4 +86,8 @@ function sortByCriteria(results) {
 
 function identity(val) {
     return val;
+}
+
+function arrayify(list) {
+    return Array.prototype.slice.call(list, 0, 1);
 }
