@@ -10,7 +10,7 @@ document.addEventListener('dragover', function (e) { e.preventDefault(); }, fals
 document.addEventListener('drop', onDrop, false);
 
 function onFileSelected(e) {
-    parseFiles(arrayify(files));
+    parseFiles(arrayify(e.target.files));
 }
 
 function onDragEnter(e) {
